@@ -8,12 +8,13 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import steps.BaseSteps;
 
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class exmplTest extends BaseTest{
+public class exmplTest extends BaseSteps {
 
     @Test
     @Ignore

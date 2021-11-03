@@ -24,4 +24,8 @@ public class Insurance {
         wait.until(ExpectedConditions.visibilityOf(buttonTravelInsurance));
 
     }
+
+    public void clickButton(){
+        buttonTravelInsurance.click();
+    }
 }

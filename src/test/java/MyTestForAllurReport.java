@@ -1,32 +1,50 @@
-import org.junit.Ignore;
+import io.qameta.allure.junit4.DisplayName;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import pages.*;
-import steps.BaseSteps;
+import pages.MainPage;
+import steps.*;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
-public class MyRefactoringTest extends BaseSteps {
+public class MyTestForAllurReport extends BaseSteps {
 
+    @DisplayName("Страхование")
     @Test
-    @Ignore
-    public void newIncurenceTest(){
+    public void testIncurance(){
         driver.get(baseUrl + "/");
         MainPage mainPage = new MainPage(driver);
-        mainPage.selectMainMenu("Страхование");
-        mainPage.selectSubMenu("Все страховые программы");
+        MainSteps mainSteps = new MainSteps();
+        InsuranceSteps insuranceSteps = new InsuranceSteps();
+        PageTravelInsuranceSteps pageTravelInsuranceSteps = new PageTravelInsuranceSteps();
+        ChoosingPolicySteps choosingPolicySteps = new ChoosingPolicySteps();
+        FormalizationSteps formalizationSteps = new FormalizationSteps();
 
-        new Insurance(driver).clickButton();
-        new PageTravelInsurance(driver).clickButtonOnline();
+        HashMap<String, String> testData = new HashMap<>();
+        testData.put("Имя","Дмитрий");
+        testData.put("Имя_","Дмитрий2");
+        testData.put("Фамилия","Иванов");
+        testData.put("Фамилия_","Иванов2");
+        testData.put("Отчество","Иванович");
+        testData.put("Дата рождения","09.07.2003");
+        testData.put("Дата рождения_","09.07.2021");
+        testData.put("Серия","1234");
+        testData.put("Номер","123456");
+        testData.put("Дата выдачи","09.07.2019");
+        testData.put("Кем выдан","No name");
 
+        mainSteps.stepClickMenu("Страхование");
+        mainSteps.stepClickButtonSubMenu("Все страховые программы");
+        insuranceSteps.stepClickButtonInsurace();
+        pageTravelInsuranceSteps.stepClickButtonOnline();
         String originalWindow = driver.getWindowHandle();
         final Set<String> oldWindowsSet = driver.getWindowHandles();
-        new PageTravelInsurance(driver).clickButtonOnSite();
+        pageTravelInsuranceSteps.stepClickButtonSite();
         String newWindow = (new WebDriverWait(driver, 10))
                 .until(new ExpectedCondition<String>() {
                            public String apply(WebDriver driver) {
@@ -39,27 +57,14 @@ public class MyRefactoringTest extends BaseSteps {
                 );
         driver.switchTo().window(newWindow);
 
-        new ChoosingPolicy(driver).clickButtonMin();
-        new ChoosingPolicy(driver).clickButtonCheckout();
-        new ChoosingPolicy(driver).clickButtonCheckout();
+        choosingPolicySteps.stepClickButtonMin();
+        choosingPolicySteps.stepClickButtonCheckout();
+        choosingPolicySteps.stepClickButtonCheckout();
 
-        Formalization formalization = new Formalization(driver);
+        formalizationSteps.stepFillFields(testData);
+        formalizationSteps.stepSelectSexM();
 
-        formalization.fillField("Имя","Дмитрий");
-        formalization.fillField("Имя_","Дмитрий2");
-        formalization.fillField("Фамилия","Иванов");
-        formalization.fillField("Фамилия_","Иванов2");
-        formalization.fillField("Отчество","Иванович");
-        formalization.fillField("Дата рождения","09.07.2003");
-        formalization.fillField("Дата рождения_","09.07.2021");
-        formalization.clickSexM();
-        formalization.fillField("Серия","1234");
-        formalization.fillField("Номер","123456");
-        formalization.fillField("Дата выдачи","09.07.2019");
-        formalization.clickFieldNumber();
-        formalization.fillField("Кем выдан","No name");
-
-        assertEquals("Иванов", driver.findElement(By.id("person_lastName")).getAttribute("value"));
+        assertEquals("Иванов1", driver.findElement(By.id("person_lastName")).getAttribute("value"));
         assertEquals("Дмитрий", driver.findElement(By.id("person_firstName")).getAttribute("value"));
         assertEquals("Иванович", driver.findElement(By.id("person_middleName")).getAttribute("value"));
         assertEquals("09.07.2003", driver.findElement(By.id("person_birthDate")).getAttribute("value"));
@@ -68,11 +73,10 @@ public class MyRefactoringTest extends BaseSteps {
         assertEquals("09.07.2019", driver.findElement(By.id("documentDate")).getAttribute("value"));
         assertEquals("No name", driver.findElement(By.id("documentIssue")).getAttribute("value"));
 
+        formalizationSteps.stepClickButtonNext();
 
-        formalization.clickButtonNext();
         assertEquals("При заполнении данных произошла ошибка", driver.findElement(By.xpath("//*[@class='alert-form alert-form-error']")).getText());
         assertEquals("Поле не заполнено.", driver.findElement(By.xpath("//legend[text()='Контакты']/..//*[@class='invalid-validate form-control__message']")).getText());
-
-
     }
+
 }
