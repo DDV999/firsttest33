@@ -42,20 +42,7 @@ public class MyTestForAllurReport extends BaseSteps {
         mainSteps.stepClickButtonSubMenu("Все страховые программы");
         insuranceSteps.stepClickButtonInsurace();
         pageTravelInsuranceSteps.stepClickButtonOnline();
-        String originalWindow = driver.getWindowHandle();
-        final Set<String> oldWindowsSet = driver.getWindowHandles();
         pageTravelInsuranceSteps.stepClickButtonSite();
-        String newWindow = (new WebDriverWait(driver, 10))
-                .until(new ExpectedCondition<String>() {
-                           public String apply(WebDriver driver) {
-                               Set<String> newWindowsSet = driver.getWindowHandles();
-                               newWindowsSet.removeAll(oldWindowsSet);
-                               return newWindowsSet.size() > 0 ?
-                                       newWindowsSet.iterator().next() : null;
-                           }
-                       }
-                );
-        driver.switchTo().window(newWindow);
 
         choosingPolicySteps.stepClickButtonMin();
         choosingPolicySteps.stepClickButtonCheckout();
