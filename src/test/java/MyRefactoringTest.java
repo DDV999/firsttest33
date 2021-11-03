@@ -1,6 +1,11 @@
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.*;
+
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,7 +19,22 @@ public class MyRefactoringTest extends BaseTest {
         mainPage.selectSubMenu("Все страховые программы");
 
         new Insurance(driver).buttonTravelInsurance.click();
+
+        String originalWindow = driver.getWindowHandle();
+        final Set<String> oldWindowsSet = driver.getWindowHandles();
         new PageTravelInsurance(driver).clickButton();
+        String newWindow = (new WebDriverWait(driver, 10))
+                .until(new ExpectedCondition<String>() {
+                           public String apply(WebDriver driver) {
+                               Set<String> newWindowsSet = driver.getWindowHandles();
+                               newWindowsSet.removeAll(oldWindowsSet);
+                               return newWindowsSet.size() > 0 ?
+                                       newWindowsSet.iterator().next() : null;
+                           }
+                       }
+                );
+        driver.switchTo().window(newWindow);
+
         new ChoosingPolicy(driver).clickButtonMin();
         new ChoosingPolicy(driver).clickButtonCheckout();
         new ChoosingPolicy(driver).clickButtonCheckout();

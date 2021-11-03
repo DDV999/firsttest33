@@ -4,9 +4,12 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.Set;
 
 import static org.junit.Assert.assertEquals;
 
@@ -38,9 +41,25 @@ public class exmplTest extends BaseTest{
 
         driver.findElement(By.xpath("//*[@class='kitt-button__text'][contains(text(),'Оформить онлайн')]")).click();
 
-        driver.switchTo().defaultContent();
+        String originalWindow = driver.getWindowHandle();
+        final Set<String> oldWindowsSet = driver.getWindowHandles();
 
-        driver.findElement(By.xpath("//*[contains(text(),'Минимальная')]")).click();
+        driver.findElement(By.xpath("//*[@class='kitt-button__text'][contains(text(),'Оформить на сайте')]")).click();
+
+        String newWindow = (new WebDriverWait(driver, 10))
+                .until(new ExpectedCondition<String>() {
+                           public String apply(WebDriver driver) {
+                               Set<String> newWindowsSet = driver.getWindowHandles();
+                               newWindowsSet.removeAll(oldWindowsSet);
+                               return newWindowsSet.size() > 0 ?
+                                       newWindowsSet.iterator().next() : null;
+                           }
+                       }
+                );
+
+        driver.switchTo().window(newWindow);
+
+        driver.findElement(By.xpath("//h3[contains(text(),'Минимальная')]")).click();
         driver.findElement(By.xpath("//*[contains(text(),'Оформить')]")).click();
         driver.findElement(By.xpath("//*[contains(text(),'Оформить')]")).click();
 
@@ -50,7 +69,6 @@ public class exmplTest extends BaseTest{
         fillField(By.xpath("//*[@id='surname_vzr_ins_0']"),"Иванова");
         fillField(By.xpath("//*[@id='name_vzr_ins_0']"),"Ольга");
         fillField(By.xpath("//*[@id='birthDate_vzr_ins_0']"),"09.07.2021");
-
 
         driver.findElement(By.xpath("//*[@id='name_vzr_ins_0']")).click();
         Thread.sleep(1000);
@@ -71,8 +89,11 @@ public class exmplTest extends BaseTest{
         driver.findElement(By.xpath("//*[@id='passportNumber']")).click();
         Thread.sleep(1000);
         fillField(By.xpath("//*[@id='documentIssue']"),"No name");
-        Thread.sleep(13000);
+        Thread.sleep(1000);
 
+        assertEquals("Иванова", driver.findElement(By.id("surname_vzr_ins_0")).getAttribute("value"));
+        assertEquals("Ольга", driver.findElement(By.id("name_vzr_ins_0")).getAttribute("value"));
+        assertEquals("09.07.2021", driver.findElement(By.id("birthDate_vzr_ins_0")).getAttribute("value"));
         assertEquals("Сергеев", driver.findElement(By.id("person_lastName")).getAttribute("value"));
         assertEquals("Иван", driver.findElement(By.id("person_firstName")).getAttribute("value"));
         assertEquals("Иванович", driver.findElement(By.id("person_middleName")).getAttribute("value"));

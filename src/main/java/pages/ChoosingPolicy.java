@@ -6,7 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class ChoosingPolicy {
-    @FindBy(xpath = "//*[contains(text(),'Минимальная')]")
+    @FindBy(xpath = "//h3[contains(text(),'Минимальная')]")
     public WebElement buttonMin;
 
     @FindBy(xpath = "//*[contains(text(),'Оформить')]")

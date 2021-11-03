@@ -9,6 +9,8 @@ import org.openqa.selenium.support.PageFactory;
 public class PageTravelInsurance {
     @FindBy(xpath = "//*[@class='kitt-button__text'][contains(text(),'Оформить онлайн')]")
     public WebElement buttonCheckoutOnline;
+    @FindBy(xpath = "//*[@class='kitt-button__text'][contains(text(),'Оформить на сайте')]")
+    public WebElement buttonCheckoutOnSite;
 
     public PageTravelInsurance (WebDriver driver){
         PageFactory.initElements(driver, this);
@@ -16,6 +18,7 @@ public class PageTravelInsurance {
 
     public void clickButton() {
         buttonCheckoutOnline.click();
+        buttonCheckoutOnSite.click();
     }
 
 }
