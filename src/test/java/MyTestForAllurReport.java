@@ -51,7 +51,7 @@ public class MyTestForAllurReport extends BaseSteps {
         formalizationSteps.stepFillFields(testData);
         formalizationSteps.stepSelectSexM();
 
-        assertEquals("Иванов1", driver.findElement(By.id("person_lastName")).getAttribute("value"));
+        assertEquals("Иванов", driver.findElement(By.id("person_lastName")).getAttribute("value"));
         assertEquals("Дмитрий", driver.findElement(By.id("person_firstName")).getAttribute("value"));
         assertEquals("Иванович", driver.findElement(By.id("person_middleName")).getAttribute("value"));
         assertEquals("09.07.2003", driver.findElement(By.id("person_birthDate")).getAttribute("value"));

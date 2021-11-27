@@ -16,12 +16,12 @@ public class FormalizationSteps extends BaseSteps{
         fields.forEach(this::stepFillField);
     }
 
-    @Step("Нажать на кнопку Продолжить {0}")
+    @Step("Нажать на кнопку Продолжить")
     public void stepClickButtonNext(){
         new Formalization(driver).clickButtonNext();
     }
 
-    @Step("Выбрать пол Мужской {0}")
+    @Step("Выбрать пол Мужской")
     public void stepSelectSexM(){
         new Formalization(driver).clickSexM();
     }

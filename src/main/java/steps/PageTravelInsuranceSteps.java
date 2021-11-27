@@ -9,12 +9,12 @@ import pages.PageTravelInsurance;
 import java.util.Set;
 
 public class PageTravelInsuranceSteps extends BaseSteps{
-    @Step("Нажать на кнопку Оформить онлайн {0}")
+    @Step("Нажать на кнопку Оформить онлайн")
     public void stepClickButtonOnline(){
         new PageTravelInsurance(driver).clickButtonOnline();
     }
 
-    @Step("Нажать на кнопку Оформить на сайте {0}")
+    @Step("Нажать на кнопку Оформить на сайте")
     public void stepClickButtonSite(){
         String originalWindow = driver.getWindowHandle();
         final Set<String> oldWindowsSet = driver.getWindowHandles();
